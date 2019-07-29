@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tradecore FrontEnd test</title>
+    <link rel="shortcut icon" href="assets/img/favicon-57x57.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+</head>
+
+<body ng-controller="mainCtrl">
+    <div class="container" ng-switch="step">
+
+        <div class="row">
+            <h4 ng-hide="resetStep">Add Book - New Book</h4>
+        </div>
+        <div class="row">
+            <div class="breadcrumb" ng-hide="resetStep">
+                <div class="steps">
+                    <span class="step one" ng-class="{active: step == 1}">1</span>
+                    <p class="step-genre-name">Genre</p>
+                </div>
+                <div class="steps">
+                    <hr class="line">
+                    <span class="step two" ng-class="{active: step == 2}">2</span>
+                    <p class="step-subgenre-name">Subgenre</p>
+                </div>
+                <div class="steps">
+                    <hr class="line">
+                    <span class="step three" ng-class="{active: step == 22 && withoutSubgenre == false || step == 3 && withoutSubgenre == true}">{{ stepNo }}</span>
+                    <p class="step-name step-addsubgenre-name" ng-class="{stepinfoname: step == 3 && withoutSubgenre == true}">{{ stepTitle }}</p>
+                </div>
+                <div class="steps" ng-hide="withoutSubgenre">
+                    <hr class="line">
+                    <span class="step four" ng-class="{active: step == 3}">4</span>
+                    <p class="step-info">Info</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Genre - step 1 -->
+        <div ng-switch-when="1" id="genre">
+            <div class="row genre-row">
+                <div class="wrapper" ng-repeat="genre in allGenres">
+                    <button type="button" class="btn genre-btn" ng-class="{active: genre == genreSelected}" ng-model="genreSelected" ng-click="genreBtnEnabled(genre)">{{genre.name}}</button>
+                </div>
+            </div>
+            <div class="btn-row row">
+                <button type="button" class="next-btn" ng-disabled="genreIsDisabled" ng-click="setStep(2)">Next</button>
+            </div>
+        </div>
+        
+        <!-- Subgenre - step 2 -->
+        <div ng-switch-when="2" id="subgenre">
+            <div class="row subgenre-row">
+                <div class="wrapper" ng-repeat="subgenre in activeGenre">
+                    <button type="button" class="btn subgenre-btn" ng-class="{active: subgenre == subgenreSelected}" ng-model="subgenreSelected" ng-click="subgenreBtnEnabled(subgenre)">{{subgenre.name}}</button>
+                </div>
+                <button ng-click="setStep(22)" class="btn subgenre-btn">Add New</button>
+            </div>
+            <div class="btn-row row">
+                <button type="button" class="prev-btn" ng-click="setStep(1)"><span>&#60;</span> Back</button>
+                <button class="next-btn" ng-disabled="subgenreIsDisabled" ng-click="setStep(3)">Next</button>
+            </div>
+        </div>
+
+       <!-- Add new subgenre - step 3 -->
+        <div ng-switch-when="22" id="addsubgenre">
+            <form name="subgenreForm" novalidate>
+                <div class="row">
+                    <input type="text" name="subgenreInput" ng-model="user.subgenreInput" placeholder="Subgenre name" minlength="3" maxlength="20" required>
+                </div>
+                <div class="row warning-row">
+                    <p class="msg-warning" ng-show="subgenreForm.subgenreInput.$invalid && subgenreForm.subgenreInput.$touched">
+                        Subgenre name is required.
+                    </p>
+                    <p class="msg-warning" ng-show="subgenreForm.subgenreInput.$error.minlength && subgenreForm.subgenreInput.$touched">
+                        Minimum length is three.
+                    </p>
+                </div>
+                <div class="row">
+                    <input type="checkbox" name="subgenreDesc" ng-model="user.subgenreDesc" ng-true-value="true" ng-false-value="false" ng-init="user.subgenreDesc=false" ng-checked="user.subgenreDesc">
+                    <label class="label">Description is required for this subgenre</label>
+                </div>
+                <div class="btn-row row">
+                    <button type="button" class="prev-btn" ng-click="setStep(2)"><span>&#60;</span> Back</button>
+                    <button type="button" class="next-btn submit" ng-disabled="subgenreForm.$invalid" ng-click="subgenreSubmit(user); setStep(3);">Next</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Information form - step 3/4 -->
+        <div ng-switch-when="3" id="info">
+            <div class="row">
+                <form name="infoForm" id="infoForm" method="post" novalidate>
+                    <label for="booktitle">Book Title: </label>
+                    <input type="text" name="booktitle" placeholder="Book Title" maxlength="100" ng-model="user.booktitle" required>
+                    <div class="row warning-row">
+                        <p class="msg-warning" ng-show="infoForm.booktitle.$invalid && infoForm.booktitle.$touched">Book title is required.</p>
+                    </div>
+
+                    <label for="author">Author: </label>
+                    <select name="author" ng-model="user.author" required>
+                        <option value="" disabled>Author</option>
+                        <option value="{{ author.name }}" ng-repeat="author in authors">{{ author.name }}</option>
+                    </select>
+                    <div class="row warning-row">
+                        <p class="msg-warning" ng-show="infoForm.author.id.$invalid && infoForm.author.id.$touched || infoForm.author.id.$empty">
+                            Author select is required.
+                        </p>
+                    </div>
+
+                    <label for="isbn">ISBN: </label>
+                    <input type="number" name="isbn" ng-model="user.isbn" placeholder="ISBN" min="1" maxlength="70" required>
+                    <div class="row warning-row">
+                        <p class="msg-warning" ng-show="infoForm.isbn.$invalid && infoForm.isbn.$touched">Please add a ISBN number only</p>
+                    </div>
+
+                    <label for="publisher">Publisher: </label>
+                    <select name="publisher" ng-model="user.publisher" required>
+                        <option value="" disabled selected>Publisher</option>
+                        <option value="{{ publisher.name }}" ng-repeat="publisher in publishers">{{ publisher.name }}</option>
+                    </select>
+
+                    <label for="date">Date published: </label>
+                    <input type="date" name="date" id="date" placeholder="DD/MM/YYYY" min="2000-01-01" max="2019-12-31" ng-model="user.date" required>
+                    <div class="row warning-row">
+                        <p class="msg-warning" ng-messages-multiple ng-show="infoForm.date.$invalid && infoForm.date.$touched">Select a publish date</p>
+                    </div>
+
+                    <label for="numpages">Number of pages: </label>
+                    <input name="numpages" type="number" placeholder="Number of pages" ng-model="user.numpages" min="1" max="2000" required>
+                    <div class="row warning-row">
+                        <p class="msg-warning" ng-messages-multiple ng-show="infoForm.numpages.$invalid && infoForm.numpages.$touched">Select a page number</p>
+                    </div>
+
+                    <label for="format">Format: </label>
+                    <select name="format" ng-model="user.format" required>
+                        <option value="" disabled selected>Format</option>
+                        <option value="{{ format.name }}" ng-repeat="format in formats">{{ format.name }}</option>
+                    </select>
+
+                    <div class="row">
+                        <label for="edition" class="">Edition: </label>
+                        <label for="language" class="">Edition language: </label>
+                    </div>
+                    <div class="row">
+                        <input type="text" name="edition" maxlength="50" placeholder="Edition" ng-model="user.edition" required>
+                        <select name="language" ng-model="user.language" required>
+                            <option value="" disabled selected>Edition language</option>
+                            <option value="{{ language.name }}" ng-repeat="language in languages">{{ language.name }}</option>
+                        </select>
+                    </div>
+                    <div class="row warning-row">
+                        <p class="msg-warning" ng-messages-multiple ng-show="infoForm.edition.$invalid && infoForm.edition.$touched">Edition is required</p>
+                        <p class="msg-warning" ng-messages-multiple ng-show="infoForm.language.id.$invalid && infoForm.language.id.$touched">Edition language is required</p>
+                    </div>
+
+                    <div>
+                        <label for="description">Description: </label>
+                        <textarea name="description" id="description" placeholder="Type the description..." ng-model="user.description" ng-required="requiredIfTrue" cols="20" rows="7"></textarea>
+                        <div class="row warning-row">
+                            <p class="msg-warning" ng-show="subgenreForm.description.$invalid && subgenreForm.subgenreInput.$touched">
+                                Descriptions required.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="btn-row row">
+                        <button type="button" class="prev-btn" ng-click="setStep(2)"><span>&#60;</span> Back</button>
+                        <button type="button" class="next-btn submit" ng-disabled="infoForm.$invalid" ng-click="infoSubmit(user); setStep(4)">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reset - last step -->
+        <div ng-switch-when="4" id="finished" ng-model="resetStep">
+            <div class="row">
+                <img src="assets/img/done_icon.svg" alt="done icon">
+            </div>
+            <div class="row">
+                <p>Book Added Successfully</p>
+            </div>
+            <div class="row reset-btn-row">
+                <button class="reset-btn" ng-click="reset(); setStep(1)">Add Another Book</button>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script src="js/main.js"></script>
+    <script src="js/controllers/maincontrol.js"></script>
+    <script src="js/factories/db.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,276 @@
+/** Default **/
+
+head,
+body {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    background-color: transparent;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+}
+
+/** Container **/
+
+.container {
+    display: block;
+    width: 65%;
+    height: auto;
+    margin: 0 auto;
+    border: 1px solid #525a67;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/** Row **/
+
+.row {
+    display: flex;
+    width: 100%;
+}
+
+.btn-row {
+    margin-top: 35px;
+    justify-content: flex-end;
+}
+
+.genre-row,
+.subgenre-row {
+    justify-content: space-between;
+}
+
+#finished .row {
+    justify-content: center;
+}
+
+/** Breadcrump **/
+
+.breadcrumb {
+    position: relative;
+    display: block;
+    height: 80px;
+    margin: 20px 0 20px 0;
+}
+
+.steps {
+    display: inline-block;
+}
+
+span.step {
+    display: inline-block;
+    float: left;
+    height: 40px;
+    width: 40px;
+    background-color: #e8ecf3;
+    border-radius: 50%;
+    text-align: center;
+    padding-top: 10px;
+    margin: 5px;
+    box-sizing: border-box;
+}
+
+span.active {
+    background-color: #525a67;
+    color: #ffffff;
+}
+
+p.step-name,
+p.step-genre-name,
+p.step-subgenre-name,
+p.step-addsubgenre-name,
+p.step-info-name,
+p.step-info {
+    position: absolute;
+    top: 50px;
+    left: 5px;
+    font-size: 14px;
+}
+
+p.step-subgenre-name {
+    left: 210px;
+}
+
+p.step-addsubgenre-name {
+    left: 400px;
+}
+
+p.stepinfoname {
+    left: 450px;
+}
+
+p.step-info {
+    left: 670px;
+}
+
+hr.line {
+    display: inline-block;
+    float: left;
+    width: 120px;
+    border: 0.5px solid #525a67;
+    margin: 22px;
+}
+
+.genre-btn,
+.subgenre-btn,
+.next-btn,
+.prev-btn,
+.reset-btn {
+    border: 1px solid #525a67;
+    border-radius: 5px;
+    background: transparent;
+    padding: 15px;
+    font-size: 17px;
+    float: left;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+.genre-btn.active,
+.subgenre-btn.active,
+.genre-btn:hover,
+.subgenre-btn:hover,
+.next-btn:hover:enabled,
+.prev-btn:hover:enabled,
+.next-btn:focus:enabled,
+.prev-btn:focus:enabled {
+    background-color: #525a67;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.next-btn,
+.prev-btn {
+    padding: 10px 35px;
+    font-size: 14px;
+}
+
+.reset-btn {
+    padding: 10px 70px;
+    background-color: #525a67;
+    color: #ffffff;
+    margin-top: 35px;
+}
+
+.reset-btn:hover {
+    cursor: pointer;
+    background-color: gray;
+
+}
+
+/** Form styles **/
+
+label {
+    font-size: 15px;
+}
+
+.warning-row {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.msg-warning {
+    font-style: italic;
+    color: #525a67;
+    font-size: 13px;
+    margin-bottom: 20px;
+    padding-right: 25px;
+}
+
+/** Subgenre form **/
+
+#addsubgenre input[type="text"] {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid gray;
+    height: 35px;
+    padding-left: 15px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+#addsubgenre input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    background-color: transparent!important;
+
+}
+
+#addsubgenre input[type="checkbox"]:hover {
+    cursor: pointer;
+}
+
+#addsubgenre label {
+    margin: 4px 10px 0 0;
+}
+
+/** Information form **/
+
+form#infoForm {
+    width: 100%;
+}
+
+#info input:not(.submit),
+#info select {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid gray;
+    height: 35px;
+    padding-left: 15px;
+    margin: 10px 0 10px 0;
+    box-sizing: border-box;
+    color: #8b8b8b;
+}
+
+#info select option:disabled {
+    color: #8b8b8b;
+}
+
+#info select[name="format"],
+#info input[name="date"] {
+    width: 33%;
+    display: block;
+}
+
+#info input[name="numpages"] {
+    width: 25%;
+    display: block;
+}
+
+#info input[name="edition"],
+#info label[for="edition"],
+#info select[name="language"] {
+    width: 33%;
+    margin-right: 20px;
+}
+
+#info textarea {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid gray;
+    padding: 15px;
+    margin: 10px 0 35px 0;
+    resize: none;
+    box-sizing: border-box;
+}
+
+#addsubgenre .required,
+#info .required {
+    width: 100%;
+    display: block;
+    margin-bottom: 25px;
+}
+
+
+/** Responsive **/
