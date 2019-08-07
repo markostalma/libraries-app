@@ -1,2 +1,2 @@
 # libraries-app
-Libraries App
+Simple Libraries App in AngularJS
